@@ -23,11 +23,18 @@ module.exports = function (grunt) {
         commitFiles: ['package.json', 'bower.json'],
         pushTo: 'origin'
       }
+    },
+    watch: {
+      karma: {
+        files: ['http-batch.js', 'test/**/*.js'],
+        tasks: ['karma']
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('test', ['jshint', 'karma:travis']);

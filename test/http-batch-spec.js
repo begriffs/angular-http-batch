@@ -17,7 +17,8 @@
       batch(function () {
         $http.get('/foo');
       });
-      $httpBackend.expectGET('/batch');
+      $http.post('/batch');
+      $httpBackend.expectPOST('/batch');
       $httpBackend.flush(1);
       $httpBackend.verifyNoOutstandingRequest();
     });
