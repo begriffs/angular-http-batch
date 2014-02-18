@@ -1,24 +1,41 @@
-angular.module('begriffs.http-batch', []).
-  factory('http-batch', ['$http', '$q', function ($http, $q) {
+angular.module('begriffs.http-batch', [],
+  ['$provide', '$httpProvider', function($provide, $httpProvider) {
+
     'use strict';
 
-    return function (batchEndpoint) {
+    $provide.factory('captureRequest',
+      ['$q', function ($q) {
+        console.log("Create captureRequest");
+        return {
+          request: function (config) {
+            console.log(config);
+            return $q.defer();
+          },
+          requestError: function (config) {
+            console.log(config);
+            return $q.defer();
+          }
+        };
+      }]
+    );
+    $httpProvider.interceptors.push('captureRequest');
 
-      return function (f) {
-        var requestQueue = [];
+    $provide.factory('http-batch',
+      ['$http', function ($http) {
 
-        function enqueueRequest(r) {
+        return function (batchEndpoint) {
 
-        }
+          return function (f) {
+            console.log($httpProvider.interceptors);
 
-        // set up interceptor
+            f();
 
-        f();
-
-        // tear down interceptor
-        // wait for endpoint return
-        // resolve promises in request queue
-      };
-    };
-
-  }]);
+            $httpProvider.interceptors.pop();
+            // wait for endpoint return
+            // resolve promises in request queue
+          };
+        };
+      }]
+    );
+  }]
+);
