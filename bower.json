@@ -1,0 +1,19 @@
+{
+  "name": "angular-http-batch",
+  "version": "0.0.1",
+  "main": "http-batch.js",
+  "dependencies": {
+    "angular": "latest"
+  },
+  "devDependencies": {
+    "angular-mocks": "latest",
+    "jasmine-as-promised": "latest"
+  },
+  "ignore": [
+    "**/.*",
+    "**/*.json",
+    "node_modules",
+    "bower_components",
+    "test"
+  ]
+}

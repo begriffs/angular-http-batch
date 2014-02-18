@@ -1,0 +1,34 @@
+{
+  "name": "angular-http-batch",
+  "version": "0.0.1",
+  "description": "Leap multiple $http calls in a single bound",
+  "main": "http-batch.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/begriffs/angular-http-batch.git"
+  },
+  "devDependencies": {
+    "bower"                    : "latest",
+    "grunt"                    : "latest",
+    "grunt-bump"               : "latest",
+    "grunt-cli"                : "latest",
+    "grunt-contrib-jshint"     : "latest",
+    "grunt-contrib-watch"      : "latest",
+    "grunt-karma"              : "latest",
+    "jshint"                   : "latest",
+    "karma"                    : "latest",
+    "karma-jasmine"            : "latest",
+    "karma-phantomjs-launcher" : "latest"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Joe Nelson",
+    "email": "",
+    "url": "https://github.com/begriffs"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
