@@ -3,19 +3,16 @@ angular.module('begriffs.http-batch', [],
 
     'use strict';
 
-    var queuedRequests = [], capturing = false;
+    var queuedRequests, capturing = false, allCaptured, captured, total;
 
     $provide.factory('captureRequest',
       ['$q', function ($q) {
         return {
           request: function (config) {
-            console.log('capturing', capturing);
             if(!capturing) {
               return config || $q.when(config);
             }
             var d = $q.defer();
-
-            console.log('capture', queuedRequests);
 
             queuedRequests.push({
               method: config.method.toLowerCase(),
@@ -23,7 +20,12 @@ angular.module('begriffs.http-batch', [],
               headers: config.headers,
               deferred: d
             });
-            console.log('capture', queuedRequests);
+
+            allCaptured.notify(queuedRequests.length / total);
+            if(queuedRequests.length === total) {
+              allCaptured.resolve();
+            }
+
             return d.promise;
           }
         };
@@ -32,24 +34,25 @@ angular.module('begriffs.http-batch', [],
     $httpProvider.interceptors.push('captureRequest');
 
     $provide.factory('http-batch',
-      ['$http', function ($http) {
+      ['$http', '$q', function ($http, $q) {
         return function (batchEndpoint) {
-          return function (f) {
-
-            console.log('pre-f', queuedRequests);
+          return function (n, f) {
 
             capturing = true;
             f();
-            capturing = false;
 
-            console.log('post-f', queuedRequests);
+            allCaptured.promise.then(
+              function () {
+                capturing = false;
 
-            console.log(batchEndpoint);
+                $http.post(batchEndpoint, {
+                  ops: queuedRequests,
+                  sequential: true
+                });
+              },
+              function () { capturing = false; }
+            );
 
-            $http.post(batchEndpoint, {
-              ops: queuedRequests,
-              sequential: true
-            });
             // resolve promises in request queue
           };
         };

@@ -14,11 +14,10 @@
   describe('http-batch', function () {
     it('reroutes through batch endpoint', function () {
       expect(typeof batch).toEqual('function');
-      batch(function () {
+      batch(1, function () {
         $http.get('/foo');
       });
-      $http.post('/batch');
-      $httpBackend.expectPOST('/batch');
+      $httpBackend.expectPOST('/batch').respond(200, '');
       $httpBackend.flush(1);
       $httpBackend.verifyNoOutstandingRequest();
     });
